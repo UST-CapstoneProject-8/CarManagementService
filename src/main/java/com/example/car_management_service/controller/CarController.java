@@ -36,6 +36,12 @@ public class CarController {
 		return new ResponseEntity<Car>(carService.getCarById(carId),HttpStatus.OK);
 	}
 	
+	@GetMapping("/location/{carLocation}")
+	public ResponseEntity<List<Car>> getCarById(@PathVariable String carLocation)
+	{
+		return new ResponseEntity<List<Car>>(carService.getCarsByLocation(carLocation),HttpStatus.OK);
+	}
+	
 	@PostMapping("/addCar")
 	public ResponseEntity<Car> addCar(@RequestBody Car newCar)
 	{

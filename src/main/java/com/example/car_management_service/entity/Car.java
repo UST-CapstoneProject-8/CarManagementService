@@ -35,5 +35,7 @@ public class Car {
 	private int saleDecision;
 	
 	private String carLocation;
+	
+	private int TotalNoOfOwners;
 
 }
