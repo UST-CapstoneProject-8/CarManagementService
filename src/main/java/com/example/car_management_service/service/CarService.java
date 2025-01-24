@@ -27,7 +27,7 @@ public class CarService {
 	}
 	
 	public Car addCar(Car newCar) {
-		return carRepo.saveAndFlush(newCar);
+		return carRepo.save(newCar);
 	}
 	
 	public Car editCar(Car updateCar)
@@ -42,7 +42,7 @@ public class CarService {
 	{
 		return carRepo.findByCarLocation(Location);
 	}
-	
+
 	public void deleteCar(Long carId)
 	{
 		carRepo.deleteById(carId);
