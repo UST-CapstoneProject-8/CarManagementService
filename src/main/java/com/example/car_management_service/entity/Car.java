@@ -25,8 +25,16 @@ public class Car {
 	@Column(name = "car_make")
 	private String make;
 
+	public void setmake(String make) {
+        this.make = make.toLowerCase();
+    }
+
 	@Column(name = "car_model")
 	private String model;
+
+	public void setmodel(String model) {
+        this.model = model.toLowerCase();
+    }
 
 	@Column(name = "car_year")
 	private int year;
@@ -43,6 +51,10 @@ public class Car {
 	@Column(name="car_location")
 	private String carLocation;
 
+	public void setCarLocation(String carLocation) {
+        this.carLocation = carLocation.toLowerCase();
+    }
+
 	@Column(name="Owner_count")
 	private int TotalNoOfOwners;
 
@@ -51,4 +63,5 @@ public class Car {
     @Column(name = "car_image_url")
     private List<String> carImageUrls;
 
+	
 }
