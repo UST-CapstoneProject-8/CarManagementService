@@ -11,4 +11,5 @@ import com.example.car_management_service.entity.Car;
 public interface CarRepository extends JpaRepository<Car,Long>{
 	
 	List<Car> findByCarLocation(String location);
+	List<Car> findByOwnerId(Long ownerId);
 }

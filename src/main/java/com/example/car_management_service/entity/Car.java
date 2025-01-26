@@ -1,5 +1,7 @@
 package com.example.car_management_service.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,5 +45,10 @@ public class Car {
 
 	@Column(name="Owner_count")
 	private int TotalNoOfOwners;
+
+	@ElementCollection
+    @CollectionTable(name = "car_images", joinColumns = @JoinColumn(name = "car_id"))
+    @Column(name = "car_image_url")
+    private List<String> carImageUrls;
 
 }
