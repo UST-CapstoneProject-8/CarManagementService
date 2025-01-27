@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.car_management_service.entity.Car;
+import com.example.car_management_service.exception.ResourceNotFoundException;
 import com.example.car_management_service.repository.CarRepository;
 
 @Service
@@ -35,11 +36,10 @@ public class CarService {
 		return carRepo.findAll();
 	}
 	
-	public Car getCarById(Long carId)
-	{
-		return carRepo.findById(carId).orElse(null);
+	public Car getCarById(Long carId) {
+	    return carRepo.findById(carId)
+	            .orElseThrow(() -> new ResourceNotFoundException("Car with ID " + carId + " not found"));
 	}
-	
 	public Car addCar(Car newCar) {
 		return carRepo.save(newCar);
 	}
@@ -53,20 +53,40 @@ public class CarService {
             carImageUrls.add(uploadResult.get("secure_url").toString());
         }
     }
-    
-    // Set the list of image URLs to your product
     car.setCarImageUrls(carImageUrls);
     
     return carRepo.save(car);
 }
 	
-	public Car editCar(Car updateCar)
-	{
-		Optional<Car> existingCar = carRepo.findById(updateCar.getCarId());
-		Car car = existingCar.get();
-		BeanUtils.copyProperties(updateCar, car);
-		return carRepo.save(car);
+//	public Car editCar(Car updateCar)
+//	{
+//		Optional<Car> existingCar = carRepo.findById(updateCar.getCarId());
+//		Car car = existingCar.get();
+//		BeanUtils.copyProperties(updateCar, car);
+//		return carRepo.save(car);
+//	}
+	
+	public Car editCar(Car updateCar) {
+	    Optional<Car> existingCarOptional = carRepo.findById(updateCar.getCarId());
+	    
+	    if (existingCarOptional.isEmpty()) {
+	        throw new ResourceNotFoundException("Car with ID " + updateCar.getCarId() + " not found");
+	    }
+	    
+	    Car existingCar = existingCarOptional.get();
+	    
+	    // Copy properties, excluding carImageUrls
+	    BeanUtils.copyProperties(updateCar, existingCar, "carImageUrls");
+	    
+	    // Update carImageUrls if provided
+	    if (updateCar.getCarImageUrls() != null && !updateCar.getCarImageUrls().isEmpty()) {
+	        existingCar.setCarImageUrls(updateCar.getCarImageUrls());
+	    }
+	    
+	    return carRepo.save(existingCar);
 	}
+
+
 	
 	public List<Car> getCarsByLocation(String Location)
 	{
