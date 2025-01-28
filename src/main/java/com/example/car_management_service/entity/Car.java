@@ -26,14 +26,14 @@ public class Car {
 	private String make;
 
 	public void setmake(String make) {
-        this.make = make.toLowerCase();
+        this.make = make.toUpperCase();
     }
 
 	@Column(name = "car_model")
 	private String model;
 
 	public void setmodel(String model) {
-        this.model = model.toLowerCase();
+        this.model = model.toUpperCase();
     }
 
 	@Column(name = "car_year")
@@ -52,16 +52,23 @@ public class Car {
 	private String carLocation;
 
 	public void setCarLocation(String carLocation) {
-        this.carLocation = carLocation.toLowerCase();
+        this.carLocation = carLocation.toUpperCase();
     }
+
 
 	@Column(name="Owner_count")
 	private int TotalNoOfOwners;
+	
+	@Enumerated(EnumType.STRING)
+    private Status status;
+	
 
 	@ElementCollection
     @CollectionTable(name = "car_images", joinColumns = @JoinColumn(name = "car_id"))
     @Column(name = "car_image_url")
     private List<String> carImageUrls;
+	
+	
 
 	
 }
