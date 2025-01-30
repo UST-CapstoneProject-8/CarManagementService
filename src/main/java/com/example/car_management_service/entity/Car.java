@@ -1,5 +1,6 @@
 package com.example.car_management_service.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -50,6 +51,9 @@ public class Car {
 
 	@Column(name="car_location")
 	private String carLocation;
+	
+	@Column(name="car_sale_price")
+	private BigDecimal carPrice;
 
 	public void setCarLocation(String carLocation) {
         this.carLocation = carLocation.toUpperCase();
@@ -67,8 +71,5 @@ public class Car {
     @CollectionTable(name = "car_images", joinColumns = @JoinColumn(name = "car_id"))
     @Column(name = "car_image_url")
     private List<String> carImageUrls;
-	
-	
-
 	
 }

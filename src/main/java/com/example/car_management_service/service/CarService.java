@@ -1,6 +1,7 @@
 package com.example.car_management_service.service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.car_management_service.entity.Car;
+import com.example.car_management_service.entity.Status;
 import com.example.car_management_service.exception.ResourceNotFoundException;
 import com.example.car_management_service.repository.CarRepository;
 
@@ -40,23 +42,31 @@ public class CarService {
 	    return carRepo.findById(carId)
 	            .orElseThrow(() -> new ResourceNotFoundException("Car with ID " + carId + " not found"));
 	}
-	public Car addCar(Car newCar) {
-		return carRepo.save(newCar);
-	}
+	
+//	public Car addCar(Car newCar) {
+//		return carRepo.save(newCar);
+//	}
 
 	public Car addCarWithImage(Car car, List<MultipartFile> files) throws IOException {
-    List<String> carImageUrls = new ArrayList<>();
-    
-    if (files != null && !files.isEmpty()) {
-        for (MultipartFile file : files) {
-            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-            carImageUrls.add(uploadResult.get("secure_url").toString());
-        }
-    }
-    car.setCarImageUrls(carImageUrls);
-    
-    return carRepo.save(car);
-}
+	    if (car.getStatus() == Status.OWNED) {
+	        car.setCarPrice(BigDecimal.ZERO); 
+	        car.setSaleDecision(0); 
+	    } else if (car.getStatus() == Status.AVAILABLE) {
+	        car.setSaleDecision(0);
+	    }
+
+	    List<String> carImageUrls = new ArrayList<>();
+	    if (files != null && !files.isEmpty()) {
+	        for (MultipartFile file : files) {
+	            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+	            carImageUrls.add(uploadResult.get("secure_url").toString());
+	        }
+	    }
+	    car.setCarImageUrls(carImageUrls);
+
+	    return carRepo.save(car);
+	}
+
 	
 //	public Car editCar(Car updateCar)
 //	{
@@ -93,6 +103,11 @@ public class CarService {
 		return carRepo.findByCarLocation(Location);
 	}
 
+	public List<Car> getCarsByMake(String make)
+	{
+		return carRepo.findByMake(make);
+	}
+	
 	public List<Car> getCarsByOwnerId(Long ownerId)
 	{
 		return carRepo.findByOwnerId(ownerId);

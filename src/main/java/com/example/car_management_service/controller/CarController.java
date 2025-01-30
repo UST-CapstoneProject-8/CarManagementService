@@ -46,6 +46,12 @@ public class CarController {
 	{
 		return new ResponseEntity<List<Car>>(carService.getCarsByLocation(carLocation),HttpStatus.OK);
 	}
+	
+	@GetMapping("/make/{make}")
+	public ResponseEntity<List<Car>> getCarsByMake(@PathVariable String make)
+	{
+		return new ResponseEntity<List<Car>>(carService.getCarsByMake(make),HttpStatus.OK);
+	}
 
 	@GetMapping("/owner/{ownerId}")
 	public ResponseEntity<List<Car>> getCarsByOwnerId(@PathVariable Long ownerId)
@@ -53,11 +59,11 @@ public class CarController {
 		return new ResponseEntity<List<Car>>(carService.getCarsByOwnerId(ownerId),HttpStatus.OK);
 	}
 	
-	@PostMapping("/addCar")
-	public ResponseEntity<Car> addCar(@RequestBody Car newCar)
-	{
-		return new ResponseEntity<Car>(carService.addCar(newCar),HttpStatus.OK);
-	}
+//	@PostMapping("/addCar")
+//	public ResponseEntity<Car> addCar(@RequestBody Car newCar)
+//	{
+//		return new ResponseEntity<Car>(carService.addCar(newCar),HttpStatus.OK);
+//	}
 
 	// @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@PostMapping("/addCarWithImage")
